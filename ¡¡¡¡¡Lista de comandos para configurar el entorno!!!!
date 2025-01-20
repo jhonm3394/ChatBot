@@ -1,0 +1,35 @@
+PASO 1**
+Crear un entorno virtual
+Un entorno virtual (venv) aísla las dependencias del proyecto para evitar conflictos con otras instalaciones de Python.
+
+# Crear un entorno virtual
+COMANDO
+python -m venv venv
+
+# Activar el entorno virtual
+# En Windows (PowerShell):
+.\venv\Scripts\activate
+
+PASO 2**
+ Instalar Flask
+Flask es el framework principal que utilizamos para el backend del chatbot.
+
+# Instalar Flask dentro del entorno virtual
+
+COMANDO
+pip install flask
+
+PASO 3**
+Instalar dependencias adicionales
+Si decides agregar funciones avanzadas en el futuro, podrías necesitar las siguientes librerías:
+
+requests: Para manejar solicitudes HTTP, por ejemplo, si integras APIs externas.
+python-dotenv: Para manejar variables de entorno (como claves de API o configuraciones sensibles).
+twilio: Si decides integrar WhatsApp a través de Twilio más adelante.
+
+
+COMANDOS
+# Instalar dependencias adicionales
+pip install requests
+pip install python-dotenv
+pip install twilio
