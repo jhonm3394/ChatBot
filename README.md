@@ -28,18 +28,12 @@ Antes de ejecutar este proyecto, asegúrate de tener instalado:
 ## **Instalación y Configuración**
 Sigue estos pasos para ejecutar el proyecto localmente:
 
-1. **Clonar el repositorio:**
-   ```bash
-   git clone <URL-del-repositorio>
-   cd Chatbot-USC
-   ```
-
-2. **Crear un entorno virtual:**
+1. **Crear un entorno virtual:**
    ```bash
    python -m venv venv
    ```
 
-3. **Activar el entorno virtual:**
+2. **Activar el entorno virtual:**
    - En Windows:
      ```bash
      venv\Scripts\activate
@@ -49,17 +43,17 @@ Sigue estos pasos para ejecutar el proyecto localmente:
      source venv/bin/activate
      ```
 
-4. **Instalar dependencias:**
+3. **Instalar dependencias:**
    ```bash
    pip install -r requirements.txt
    ```
 
-5. **Ejecutar la aplicación:**
+4. **Ejecutar la aplicación:**
    ```bash
    python app.py
    ```
 
-6. **Probar el chatbot:**
+5. **Probar el chatbot:**
    - Accede al chatbot en tu navegador: `http://127.0.0.1:5000`
    - Usa Postman o una herramienta similar para simular las interacciones.
 
@@ -82,25 +76,3 @@ Chatbot-USC/
    - 5. Ayuda con otras consultas
 3. El usuario responde con el número correspondiente para recibir las instrucciones detalladas.
 4. Al finalizar cada interacción, el chatbot ofrece las opciones de volver al menú principal o finalizar la conversación.
-
-## **Contribución**
-Si deseas colaborar en este proyecto:
-
-1. Realiza un fork del repositorio.
-2. Crea una nueva rama para tus cambios:
-   ```bash
-   git checkout -b feature/nueva-funcionalidad
-   ```
-3. Realiza tus cambios y súbelos:
-   ```bash
-   git add .
-   git commit -m "Agrega nueva funcionalidad"
-   git push origin feature/nueva-funcionalidad
-   ```
-4. Abre un Pull Request en este repositorio.
-
-## **Futuras Mejoras**
-- Integración con bases de datos para registrar interacciones y mejorar la personalización.
-- Soporte para análisis de sentimientos o errores ortográficos en las entradas del usuario.
-- Implementación de soporte para múltiples idiomas.
-- Expansión del chatbot a plataformas como WhatsApp o Telegram.
