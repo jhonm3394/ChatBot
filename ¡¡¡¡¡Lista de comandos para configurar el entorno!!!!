@@ -11,25 +11,16 @@ python -m venv venv
 .\venv\Scripts\activate
 
 PASO 2**
- Instalar Flask
+ Instalar Flask y Flask Cors
 Flask es el framework principal que utilizamos para el backend del chatbot.
 
 # Instalar Flask dentro del entorno virtual
 
 COMANDO
-pip install flask
+pip install flask flask-cors
 
 PASO 3**
-Instalar dependencias adicionales
-Si decides agregar funciones avanzadas en el futuro, podrías necesitar las siguientes librerías:
+Instalar dependencias desde requirements.txt
+Si el proyecto ya tiene un requirements.txt, instala todo con:
 
-requests: Para manejar solicitudes HTTP, por ejemplo, si integras APIs externas.
-python-dotenv: Para manejar variables de entorno (como claves de API o configuraciones sensibles).
-twilio: Si decides integrar WhatsApp a través de Twilio más adelante.
-
-
-COMANDOS
-# Instalar dependencias adicionales
-pip install requests
-pip install python-dotenv
-pip install twilio
+pip install -r requirements.txt
