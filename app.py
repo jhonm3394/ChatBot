@@ -1,113 +1,124 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 
 app = Flask(__name__)
 
-# Variables para almacenar el nombre del usuario y el estado de la conversación
-user_name = None
-in_conversation = False
+# Diccionario para almacenar datos del usuario
+user_data = {}
 
-# Función para detectar un saludo
-def es_saludo(mensaje):
-    saludos = ["hola", "buenos días", "buenas tardes", "buenas noches", "hey"]
-    return any(saludo in mensaje for saludo in saludos)
+@app.route("/")
+def index():
+    return render_template("index.html")
 
-@app.route('/chat', methods=['POST'])
+@app.route("/chat", methods=["POST"])
 def chat():
-    global user_name, in_conversation
-    user_message = request.json.get('message').lower().strip()
+    data = request.get_json()
+    user_message = data.get("message", "").strip().lower()
+    user_id = data.get("user_id", "default_user")
 
-    # Si el usuario saluda, pedir el nombre
-    if user_name is None:
-        if es_saludo(user_message):
-            return jsonify({'response': "Soy el asistente virtual. ¿Cuál es tu nombre?"})
-        else:
-            user_name = user_message
-            in_conversation = True
-            return jsonify({
-                'response': f"¡Hola, {user_name}! Soy el asistente virtual. ¿Cómo te puedo ayudar hoy?\n"
-                            "1. Inscribir o modificar materias\n"
-                            "2. Solicitar certificados\n"
-                            "3. Realizar pagos online\n"
-                            "4. Consultar historial académico\n"
-                            "5. Otras consultas\n"
-                            "98. Volver al menú principal\n"
-                            "99. Finalizar conversación\n"
-                            "Escribe el número de la opción que deseas."
-            })
+    # Si el usuario no tiene datos almacenados, se le pide el nombre
+    if user_id not in user_data:
+        user_data[user_id] = {}
 
-    # Si estamos en la conversación, procesar las opciones del menú
-    if in_conversation:
-        if user_message == '1':
-            return jsonify({
-                'response': "Para inscribir o modificar materias, sigue estos pasos:\n"
-                            "1. Ingresa al sistema académico: [https://sinu.usc.edu.co:8443/].\n"
-                            "2. Inicia sesión con tu número de identificación y contraseña.\n"
-                            "3. Ve a 'Proceso de Matrícula Académica'.\n"
-                            "4. Selecciona tu semestre y materias.\n"
-                            "5. Confirma tu matrícula.\n"
-                            "98. Volver al menú principal\n"
-                            "99. Finalizar conversación"
-            })
-        elif user_message == '2':
-            return jsonify({
-                'response': "Para solicitar un certificado:\n"
-                            "1. Ingresa al sistema académico: [https://sinu.usc.edu.co:8443/].\n"
-                            "2. Ve a 'Procesos de Certificados'.\n"
-                            "3. Selecciona el tipo de certificado y llena los datos.\n"
-                            "4. Envía la solicitud y realiza el pago.\n"
-                            "98. Volver al menú principal\n"
-                            "99. Finalizar conversación"
-            })
-        elif user_message == '3':
-            return jsonify({
-                'response': "Para realizar pagos online:\n"
-                            "1. Ingresa al sistema de pagos: [https://apps.usc.edu.co/].\n"
-                            "2. Ingresa tu número de documento y consulta tus recibos.\n"
-                            "3. Descarga los recibos o realiza el pago online.\n"
-                            "98. Volver al menú principal\n"
-                            "99. Finalizar conversación"
-            })
-        elif user_message == '4':
-            return jsonify({
-                'response': "Para consultar tu historial académico:\n"
-                            "1. Ingresa al sistema académico: [https://sinu.usc.edu.co:8443/].\n"
-                            "2. Ve a 'Histórico de Notas'.\n"
-                            "3. Verás tus materias cursadas, notas y créditos.\n"
-                            "98. Volver al menú principal\n"
-                            "99. Finalizar conversación"
-            })
-        elif user_message == '5':
-            return jsonify({
-                'response': "Si tienes otra consulta, por favor indícalo.\n"
-                            "98. Volver al menú principal\n"
-                            "99. Finalizar conversación"
-            })
-        elif user_message == '98':  # Volver al menú principal
-            return jsonify({
-                'response': f"De acuerdo, {user_name}. ¿Cómo te puedo ayudar hoy?\n"
-                            "1. Inscribir o modificar materias\n"
-                            "2. Solicitar certificados\n"
-                            "3. Realizar pagos online\n"
-                            "4. Consultar historial académico\n"
-                            "5. Otras consultas\n"
-                            "98. Volver al menú principal\n"
-                            "99. Finalizar conversación"
-            })
-        elif user_message == '99':  # Finalizar conversación
-            in_conversation = False
-            return jsonify({'response': f"¡Gracias por utilizar el chatbot, {user_name}! ¡Hasta pronto! 😊"})
+    if "name" not in user_data[user_id]:
+        user_data[user_id]["name"] = user_message.capitalize()
+        return jsonify({"response": f"**Bienvenido, {user_data[user_id]['name']}** 👋\n\n"
+                                    "Para continuar, elige una opción del menú escribiendo el número correspondiente.\n\n"
+                                    f"{get_main_menu()}"})
 
-    # Si la opción no es válida
-    return jsonify({
-    'response': "Opción no válida. Elige una de las siguientes:\n"
-                "1. Inscribir/modificar materias\n"
-                "2. Solicitar certificados\n"
-                "3. Realizar pagos online\n"
-                "4. Consultar historial académico\n"
-                "5. Otras consultas\n"
-                "98. Volver\n"
-                "99. Finalizar"
-})
+    response = handle_user_message(user_message, user_id)
+    return jsonify({"response": response})
 
-if __name__ == '__main__':
+def get_main_menu():
+    """ Devuelve el menú principal con instrucciones claras """
+    return (
+        "**📌 Menú Principal:**\n\n"
+        "Escribe el número de la opción que deseas seleccionar.\n\n"
+        "1️⃣ Inscribir o Modificar Materias\n"
+        "2️⃣ Solicitar Certificados\n"
+        "3️⃣ Realizar Pagos Online\n"
+        "4️⃣ Consultar Historial Académico\n"
+        "5️⃣ Actualización de Datos Personales\n"
+        "6️⃣ Consulta de Documentos\n"
+        "7️⃣ Resumen del Semestre\n"
+        "8️⃣ Solicitud de Grado\n"
+        "9️⃣ Evaluación a Docentes\n"
+        "🔟 Contacto\n\n"
+        "🔹 98. Volver al menú\n"
+        "🔹 99. Finalizar Chat"
+    )
+
+def handle_user_message(user_message, user_id):
+    """ Procesa la entrada del usuario y devuelve la respuesta del chatbot """
+    if user_message == "99":
+        user_data.pop(user_id, None)  # Elimina los datos del usuario
+        return "✅ **Chat finalizado. Recarga la página si deseas empezar de nuevo.**"
+
+    responses = {
+        "1": "📌 **Inscribir o Modificar Materias**\n\n"
+             "- Ingresar al [Sistema Académico USC] https://sinu.usc.edu.co:8443/\n"
+             "- Iniciar sesión con tu número de identificación y contraseña.\n"
+             "- Acceder a 'Proceso de Matrícula Académica'.\n"
+             "- Seleccionar el semestre y las materias.\n"
+             "- Confirmar y guardar el comprobante.",
+        "2": "📌 **Solicitar Certificados**\n\n"
+             "- Acceder a [Sistema Académico USC] https://sinu.usc.edu.co:8443/\n"
+             "- Ir a la sección 'Procesos de Certificados'.\n"
+             "- Seleccionar el tipo de certificado.\n"
+             "- Completar datos, enviar solicitud y realizar pago si aplica.",
+        "3": "📌 **Realizar Pagos Online**\n\n"
+             "- Ingresar a [Plataforma de Pagos] https://apps.usc.edu.co\n"
+             "- Consultar recibos pendientes.\n"
+             "- Descargar recibo o pagar en línea.\n"
+             "- Guardar el comprobante como respaldo.",
+        "4": "📌 **Consultar Historial Académico**\n\n"
+             "- Ingresar al [Sistema Académico] https://sinu.usc.edu.co:8443/\n"
+             "- Acceder a 'Proceso de Matrícula Académica'.\n"
+             "- Hacer clic en 'Histórico de Notas'.\n"
+             "- Ver las materias cursadas, calificaciones y créditos acumulados.",
+        "5": "📌 **Actualización de Datos Personales**\n\n"
+             "- Ingresar al [Sistema Académico USC] https://sinu.usc.edu.co:8443/\n"
+             "- Iniciar sesión con tu número de identificación y contraseña.\n"
+             "- Dirigirse a 'Actualización de Datos Personales'.\n"
+             "- Modificar correo, dirección, teléfono, etc.\n"
+             "- Aceptar la autorización de datos y guardar los cambios.",
+        "6": "📌 **Consulta de Documentos**\n\n"
+             "- Ingresar al [Sistema Académico] https://sinu.usc.edu.co:8443/\n"
+             "- Acceder con tu usuario y contraseña.\n"
+             "- Seleccionar la opción 'Consulta de Documentos'.\n"
+             "- Elegir el programa académico y visualizar la información en pantalla.",
+        "7": "📌 **Resumen del Semestre**\n\n"
+             "- Acceder al [Sistema Académico] https://sinu.usc.edu.co:8443/\n"
+             "- Iniciar sesión con tu número de identificación y contraseña.\n"
+             "- Ir a la opción 'Resumen de Periodo'.\n"
+             "- Elegir el programa académico y visualizar la información en pantalla.",
+        "8": "📌 **Solicitud de Grado**\n\n"
+             "- Verificar que cumplas con todos los requisitos académicos.\n"
+             "- Ingresar a la [Plataforma de Grados] https://www.usc.edu.co/grados \n"
+             "- Descargar y completar el formulario de solicitud.\n"
+             "- Realizar el pago correspondiente.\n"
+             "- Enviar el formulario y documentos requeridos al correo de la Secretaría Académica.\n"
+             "- Esperar confirmación de la fecha de la ceremonia de grado.",
+        "9": "📌 **Evaluación a Docentes**\n\n"
+             "- Acceder al [Sistema Académico] https://sinu.usc.edu.co:8443/\n"
+             "- Iniciar sesión con tus credenciales.\n"
+             "- Seleccionar la opción 'Encuesta de Evaluación Docente'.\n"
+             "- Responder todas las preguntas con base en tu experiencia.\n"
+             "- Enviar la evaluación y verificar que haya quedado registrada correctamente.",
+        "10": "📌 **Contacto**\n\n"
+             "Si necesitas más información sobre las carreras de pregrado, visita el siguiente enlace:\n\n"
+             "🔗 [Página Oficial de Pregrados] https://www.usc.edu.co/pregrados\n\n"
+             "En la página encontrarás información sobre:\n"
+             "- Facultad a la que pertenece.\n"
+             "- Identificación del programa.\n"
+             "- Total de créditos.\n"
+             "- Título otorgado.\n"
+             "- Metodología y duración.\n"
+             "- Plan de estudios.\n"
+             "- Datos de contacto: correo, teléfono y oficina.",
+        "98": get_main_menu()
+    }
+    
+    return responses.get(user_message, "❌ Opción no válida. Escribe el número de la opción que deseas seleccionar.")
+
+if __name__ == "__main__":
     app.run(debug=True)
