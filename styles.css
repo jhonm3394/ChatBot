@@ -1,0 +1,132 @@
+/* 📌 Estilos generales */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #e5ddd5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    overflow: hidden;
+}
+
+/* 📌 Estilos para el video de fondo */
+.bg-video {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+}
+
+/* 📌 Contenedor principal del chat */
+.chat-container {
+    width: 350px;
+    height: 500px;
+    background-color: rgba(255, 255, 255, 0.85); /* Transparente para ver el fondo */
+    backdrop-filter: blur(5px); /* Efecto de desenfoque */
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    position: relative;
+}
+
+/* 📌 Estilo del encabezado (barra superior tipo WhatsApp) */
+.chat-header {
+    background-color: #070a5e;
+    color: white;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    gap: 10px; /* Espacio entre imagen y texto */
+}
+
+/* 📌 Imagen del chatbot */
+.chat-icon {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%; /* Hace la imagen redonda */
+}
+
+/* 📌 Título del chatbot */
+.chat-title {
+    flex-grow: 1;
+    text-align: center;
+}
+
+/* 📌 Área donde se muestran los mensajes */
+.chat-box {
+    flex-grow: 1;
+    padding: 10px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    background-color: transparent; /* Fondo transparente para ver el video */
+}
+
+/* 📌 Estilos para los mensajes */
+.user-message, .bot-message {
+    max-width: 75%;
+    padding: 8px 12px;
+    border-radius: 10px;
+    font-size: 14px;
+    line-height: 1.4;
+    word-wrap: break-word;
+}
+
+/* 📌 Mensaje del usuario (verde tipo WhatsApp) */
+.user-message {
+    background-color: #dcf8c6;
+    align-self: flex-end;
+    border-bottom-right-radius: 0;
+}
+
+/* 📌 Mensaje del bot (gris tipo WhatsApp) */
+.bot-message {
+    background-color: #fff;
+    align-self: flex-start;
+    border-bottom-left-radius: 0;
+    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* 📌 Campo de entrada de mensajes */
+.input-area {
+    display: flex;
+    padding: 10px;
+    background-color: white;
+    border-top: 1px solid #ccc;
+}
+
+.input-area input {
+    flex-grow: 1;
+    padding: 8px;
+    font-size: 14px;
+    border: none;
+    border-radius: 20px;
+    outline: none;
+    background-color: #f0f0f0;
+}
+
+/* 📌 Botón de enviar (parecido a WhatsApp) */
+.input-area button {
+    background-color: #070a5e;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    margin-left: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 50%;
+    transition: 0.3s;
+}
+
+.input-area button:hover {
+    background-color: #1ebe5d;
+}
