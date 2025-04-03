@@ -6,19 +6,28 @@ Repositorio oficial para el desarrollo del Chatbot Académico de la Universidad 
 El chatbot ayuda a los estudiantes con diversas gestiones, como:
 
 ✅ Inscripción o modificación de materias.
+
 ✅ Solicitud de certificados.
+
 ✅ Realización de pagos online.
+
 ✅ Consulta del historial académico.
+
 ✅ Asistencia en otras consultas generales.
 
 El sistema está desarrollado en Python utilizando el framework Flask y cuenta con una interfaz moderna inspirada en WhatsApp, lo que permite una interacción fluida y natural.
 
 ## **Características Principales**
 🔹 Interfaz de conversación tipo chat con burbujas de mensajes.
+
 🔹 Mensajes dinámicos, con animación de "escribiendo..." antes de cada respuesta.
+
 🔹 Enlaces clickeables a plataformas académicas y de pagos.
+
 🔹 Fondo de pantalla personalizable (incluyendo soporte para video).
+
 🔹 Diseño responsivo y accesible.
+
 🔹 Submenús para volver al menú principal o finalizar la conversación.
 
 ## **Requisitos Previos**
@@ -79,13 +88,16 @@ Chatbot-USC/
 ## **Personalizacion**
 🔹 Cambiar el fondo:
 Si deseas un video de fondo, reemplaza el archivo en:
+
 📁 static/chat-background.mp4
 
 Si prefieres una imagen de fondo, edita el archivo styles.css y ajusta:
+
 .chat-box {
     background-image: url('static/chat-background.jpg');
     background-size: cover;
 }
+
 
 🔹 Modificar los colores y estilos:
 Edita los estilos en 📁 static/styles.css
@@ -95,8 +107,11 @@ Reemplaza 📁 static/chatbot-icon.png
 
 ## **Enlaces Importantes**
 🔹 sistema academico: https://sinu.usc.edu.co:8443/
+
 🔹 plataforma de pagos: https://apps.usc.edu.co/
+
 🔹 plataforma de grados: https://www.usc.edu.co/grados/
+
 🔹 pagina de pregrados: https://www.usc.edu.co/pregrados/
 
 ## **Uso del Chatbot**
@@ -107,14 +122,23 @@ El chatbot inicia con un mensaje de bienvenida y solicita el nombre del usuario 
 Luego de identificarse, el usuario accede al menú principal, donde puede elegir entre las siguientes opciones:
 
 1️⃣ Cómo inscribir o modificar materias
+
 2️⃣ Cómo solicitar certificados
+
 3️⃣ Cómo realizar pagos online
+
 4️⃣ Cómo consultar el historial académico
+
 5️⃣ Ayuda con otras consultas
+
 6️⃣ Cómo recuperar contraseña del sistema académico
+
 7️⃣ Información sobre grados y proceso de grado
+
 8️⃣ Cómo descargar recibos de pago
+
 9️⃣ Fechas importantes del calendario académico
+
 🔟 Cómo contactar con soporte o atención al estudiante
 
 3️⃣ Interacción con el Usuario
@@ -124,7 +148,9 @@ Dependiendo de la opción elegida, el chatbot proporciona una guía paso a paso 
 4️⃣ Cierre de la Conversación
 
 Al finalizar cada interacción, el chatbot permite al usuario elegir entre dos opciones:
+
 🔄 Volver al menú principal → Escribiendo "98", el usuario regresa al menú principal para seleccionar otra opción.
+
 ❌ Finalizar la conversación → Escribiendo "99", el usuario cierra el chat si ya no necesita más ayuda.
 
 5️⃣ Fluidez en la Conversación
